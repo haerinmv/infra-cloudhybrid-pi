@@ -16,7 +16,7 @@
 4. Récupérer le token
 ```
 
-##Obtenir le Chat ID
+## Obtenir le Chat ID
 
 - Ajouter le bot à votre groupe/canal
 - Envoyer un message test
@@ -33,7 +33,7 @@ sudo chmod 750 /var/ossec/integrations/custom-telegram.py
 sudo chown root:wazuh /var/ossec/integrations/custom-telegram.py
 ```
 
-# Installer requests si nécessaire
+## Installer requests si nécessaire
 ```bash
 sudo pip3 install requests
 ```
