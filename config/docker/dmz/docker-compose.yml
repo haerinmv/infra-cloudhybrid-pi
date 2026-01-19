@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  nextcloud-db:
+    image: postgres:15-alpine
+    container_name: nextcloud-db
+    restart: unless-stopped
+    volumes:
+      - nextcloud-db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-nextcloud}
+      - POSTGRES_USER=${POSTGRES_USER:-nextcloud}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    networks:
+      - dmz_network
+
+  nextcloud:
+    image: nextcloud:latest
+    container_name: nextcloud
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - nextcloud-data:/var/www/html
+    environment:
+      - POSTGRES_HOST=nextcloud-db
+      - POSTGRES_DB=${POSTGRES_DB:-nextcloud}
+      - POSTGRES_USER=${POSTGRES_USER:-nextcloud}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - NEXTCLOUD_ADMIN_USER=${NEXTCLOUD_ADMIN_USER:-admin}
+      - NEXTCLOUD_ADMIN_PASSWORD=${NEXTCLOUD_ADMIN_PASSWORD}
+    depends_on:
+      - nextcloud-db
+    networks:
+      - dmz_network
+
+    cowrie:
+    image: cowrie/cowrie:latest
+    container_name: cowrie
+    hostname: server01
+    restart: unless-stopped
+    ports:
+      - "2222:2222/tcp"
+      - "2223:2223/tcp"
+    volumes:
+      - cowrie-etc:/cowrie/cowrie-git/etc
+      - cowrie-var:/cowrie/cowrie-git/var
+    networks:
+      - dmz_network
+    environment:
+      - TZ=Europe/Paris
+
+volumes:
+  nextcloud-db-data:
+  nextcloud-data:
+  cowrie-etc:
+  cowrie-var:
+networks:
+  dmz_network:
+    external: true
