@@ -1,6 +1,6 @@
 # Infrastructure Cloud Hybride - Raspberry Pi + AWS
 
-> **Documentation technique détaillée disponible sur [haerinmv.github.io](https://haerinmv.github.io)**
+> **Documentation technique détaillée disponible sur**
 
 ## Contexte du projet
 
